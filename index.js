@@ -24,6 +24,23 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get('/api', function(req, res){
+  let date = new Date();  
+  res.json({unix: date.getTime(), utc: date.toGMTString()});
+});
+
+app.get('/api/:date', function(req, res){
+  const date =  (/\W/.test(req.params.date)) 
+                ? new Date(req.params.date)
+                : new Date( parseInt(req.params.date));
+
+  console.log(date);
+  
+  if( isNaN(date.valueOf()))
+    return res.json({error: date.toString()});
+
+  res.json({unix: date.getTime(), utc: date.toGMTString()});
+});
 
 
 // listen for requests :)
